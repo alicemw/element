@@ -33,22 +33,23 @@ export default {
 		var checkUser = (rule,value,callback)=>{
 			if(!value){
 				return callback(new Error("账号不能为空！"));
-			}else if(value.length>5||value.length<3){
-				return callback(new Error("账号必须在6-10个字符之间！"));
+			}else if(value.length>5||value.length<2){
+				return callback(new Error("账号必须在2-5个字之间！"));
 			}else {
 				callback()
 			}
 		};
-		var checkPass = (rule,value,callback)=>{
+		var reg = /^[a-zA-Z0-9]{6,10}$/;//6到10位字母和数字混合
+		var checkPass = (rule,value,callback) => {
 			if (value === '') {
 	          callback(new Error('请输入密码'));
-	        } else {
-	          if (this.loginform.pass1 !== '') {
-	            this.$refs.loginform.validateField('pass');
-	          }
-	          callback();
-	        }
+	        } else if(reg.test(value)){
+	         	callback()
+		    }else{
+		    	callback(new Error('6-10位字母，只允许字母和数字！'))
+		    }
 		};
+		 
 		 var checkPass2 = (rule, value, callback) => {
 		 	
 	        if (value === '') {
@@ -86,6 +87,7 @@ export default {
 			}
 		}
 	},
+	
 	methods:{
 		changeLogin () {
 			this.title =='登录'? this.title = '注册' : this.title = '登录';
@@ -93,7 +95,20 @@ export default {
 			this.labelWidth == '40px' ? this.labelWidth = '70px': this.labelWidth = '40px';
 		},
 		submit(){
-			 
+			 if(this.title == '登录'){
+			 	this.loginform.pass2 =this.loginform.pass1;
+			 }
+		 	this.$refs['loginform'].validate((valid) => {
+	          if (valid) {
+		           this.$http.get('http://m.0832pifu.com/test/test1.php').then((response) => {
+					 	this.$router.replace({ path: 'index' })
+					 })
+	          } else {
+	            console.log('error submit!!');
+	            return false;
+	          }
+	        });
+
 		},
 		reset(formName){//ref 绑定表单对象， prop绑定需要清除的表单元素item
 			this.$refs[formName].resetFields();
@@ -105,6 +120,10 @@ export default {
 <style lang="less">
 .login {
 	position: relative;
+	width: 100%;
+	height: 100%;
+	background: url('http://pic1.win4000.com/wallpaper/c/58c11baa3ca7b.jpg');
+	background-size: cover;
 }
 .el-card {
 	width: 300px;

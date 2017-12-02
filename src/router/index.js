@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/login/login'
+import index from '@/components/index/index'
+
 import helloworld from '@/components/helloworld'
 import animate from 'animate.css'
 
@@ -17,6 +19,10 @@ export default new Router({
     	path:'/helloworld',
     	name:'helloworld',
     	component:helloworld
+    },{
+    	path:'/index',
+    	name:'index',
+    	component:index
     }
   ]
 })
