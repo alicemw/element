@@ -5,7 +5,7 @@
 	  		<el-col><span class="el-icon-location">{{ip}}</span></el-col>
 	  	</el-row>
 	  	
-	  		<template v-for="(item,index) in list">
+	  		<!--<template v-for="(item,index) in list">
 	  			<el-row>
 				  		<el-col class="list" :class="{active: item.childshow}" :key="item.id"  @click.native="item.childshow = !item.childshow">
 				  			<i :class="item.icon"></i>{{item.name}} 
@@ -19,10 +19,43 @@
 		  				</router-link>
 		  			</el-col>
 	  			</el-row>
-	  		</template>
+	  		</template>-->
+	  		<el-row class="tac">
+			  <el-col :span="24">
+			   
+			    <el-menu
+			      default-active="1"
+			      class="el-menu-vertical-demo"
+			      @open="handleOpen"
+			      @close="handleClose" v-for="(item,index) in list">
+			      <el-submenu index="index">
+			        <template slot="title">
+			          <i :class="item.icon"></i>
+			          <span>{{item.name}}</span>
+			        </template>
+			        <template v-for="(aa,index) in item.children">
+			        		
+				        <el-menu-item-group>
+				        	<router-link :to="aa.path">
+					          <el-menu-item index="1-index">{{aa.name}}</el-menu-item>
+				        	</router-link>
+				        </el-menu-item-group>
+			        </template>
+			        
+			      </el-submenu>
+			     
+			    </el-menu>
+			  </el-col>
+			 
+			</el-row>
 	  	
 	  </el-aside>
-	  <el-main>Main</el-main>
+	  <el-main>
+	  	<el-header>
+	  		<i class="el-icon-menu" style="color: #20A53A;"></i>Position:首页
+	  		
+	  	</el-header>
+	  </el-main>
 	</el-container>
 </template>
 
@@ -145,15 +178,17 @@
 	.el-header {
 		line-height: 60px;
 		text-align: left;
-		font-size: 28px;
-		color: #2C3E50;
+		font-size: 20px;
+		color: rgb(32, 165, 58);
 		font-weight: bold;
-		background: ;
+		box-shadow: 0px 0px 1px 3px #ccc;
+	  	background: #FFFFFF;
 	}
 	.el-aside {
 	    background: #2C3E50;
 	    color: #333;
 	    text-align: center;
+	    
 	    
 	  }
 	  
@@ -200,12 +235,15 @@
 	  	background: #3C444D;
 	  	border-bottom: 1px solid #20a53a;
 	  }
-	  .list_child a {
+	   a {
 	  	color: white;
 	  	text-decoration: none;
 	  }
 	  .active {
 	  	border-left: #20a53a 2px solid;
 	  }
-		
+	  .el-menu li {
+	  	text-align: left;
+	  }
+
 </style>
