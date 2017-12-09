@@ -21,7 +21,7 @@ export default new Router({
     	component:helloworld
     },{
     	path:'/index',
-    	name:'index',
+    	name:'首页',
     	component:index
     }
   ]

@@ -71,7 +71,8 @@ export default {
 			loginform:{
 				user:'',
 				pass1:'',
-				pass2:''
+				pass2:'',
+				type:'login'
 			},
 			rule1:{
 				user:[
@@ -91,18 +92,51 @@ export default {
 	methods:{
 		changeLogin () {
 			this.title =='登录'? this.title = '注册' : this.title = '登录';
+			this.loginform.type =='login'? this.loginform.type = 'register' : this.loginform.type = 'login';
 			this.confirmPass = !this.confirmPass;
 			this.labelWidth == '40px' ? this.labelWidth = '70px': this.labelWidth = '40px';
 		},
 		submit(){
 			 if(this.title == '登录'){
 			 	this.loginform.pass2 =this.loginform.pass1;
+			 	
 			 }
 		 	this.$refs['loginform'].validate((valid) => {
+		 		let data = this.loginform;
 	          if (valid) {
-		           this.$http.get('http://m.0832pifu.com/test/test1.php').then((response) => {
-					 	this.$router.replace({ path: 'index' })
-					 })
+		           $.ajax({
+		           	type:"post",
+		           	url:"http://ceshi.0832pifu.com/test/config.php",
+		           	data:data,
+		           	async:true,
+		           	success:(res)=>{
+		           		if(res=='用户名已存在！'||res=='用户名不存在！'||res=='用户已存在！'){
+		           			this.$notify({
+					          title: '警告',
+					          message: res,
+					          type: 'warning',
+					          offset:100
+					        });
+					         this.reset('loginform');
+		           		}else if(res =="密码错误！"){
+		           			this.$notify.error({
+					          title: '错误',
+					          message: res,
+					           offset:100
+					        });
+					        this.reset('loginform');
+		           		}else if(res =='登录成功！'){
+		           			this.$notify({
+					          title: '成功',
+					          message: res,
+					          type: 'success',
+					          offset:100
+					        });
+					        this.$router.replace({path:'index'});
+							
+		           		}
+		           	}
+		           });
 	          } else {
 	            console.log('error submit!!');
 	            return false;

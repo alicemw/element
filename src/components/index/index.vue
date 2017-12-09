@@ -52,9 +52,12 @@
 	  </el-aside>
 	  <el-main>
 	  	<el-header>
-	  		<i class="el-icon-menu" style="color: #20A53A;"></i>Position:首页
-	  		
+	  		<i class="el-icon-location" style="color: #20A53A;"></i>Position:{{name}}
 	  	</el-header>
+	  	<el-row style="margin-top:10px; padding: 10px;background: #20A53A;color: white;">
+	  		<el-col :span="6"><i class="el-icon-menu"></i>系统:{{os}}</el-col>
+	  		<el-col :span="12"><i class="el-icon-search"></i>浏览器:{{broswer}}</el-col>
+	  	</el-row>
 	  </el-main>
 	</el-container>
 </template>
@@ -65,7 +68,10 @@
 			
 			return {
 				ip:'',
+				os:'获取中',
+				broswer:'获取中',
 				active:'active',
+				name:this.$route.name,
 				list:[
 				{name:'首页',icon:'el-icon-date',childshow:true},
 				{
@@ -88,10 +94,10 @@
 					name:'访客数据统计',
 					icon:'el-icon-tickets',
 					children:[
-						{name:'数据明细（网络）',path:'/orderList'},
-						{name:'医院项目设置（网络）',path:'/orderList'},
-						{name:'数据明细（电话）',path:'/orderList'},
-						{name:'医院项目设置（电话）',path:'/orderList'}
+						{name:'数据明细（网络）',path:'/vDetail1'},
+						{name:'医院项目设置（网络）',path:'/vSetting1'},
+						{name:'数据明细（电话）',path:'/vDetail2'},
+						{name:'医院项目设置（电话）',path:'/vSetting2'}
 					],
 					childshow:false
 				},
@@ -99,18 +105,18 @@
 					name:'网站挂号设置',
 					icon:'el-icon-edit-outline',
 					children:[
-						{name:'网站挂号列表',path:'/orderList'},
-						{name:'网站挂号设置',path:'/orderList'}
+						{name:'网站挂号列表',path:'/siteList'},
+						{name:'网站挂号设置',path:'/siteSetting'}
 					],
 					childshow:false
 				},{
 					name:'数据报表',
 					icon:'el-icon-edit',
 					children:[
-						{name:'总体报表',path:'/orderList'},
-						{name:'性别',path:'/orderList'},
-						{name:'年龄',path:'/orderList'},
-						{name:'病患类型',path:'/orderList'},
+						{name:'总体报表',path:'/oSatement'},
+						{name:'性别',path:'/sex'},
+						{name:'年龄',path:'/age'},
+						{name:'病患类型',path:'/'},
 						{name:'媒体来源',path:'/orderList'},
 						{name:'来源状态',path:'/orderList'},
 						{name:'接待医生',path:'/orderList'},
@@ -121,39 +127,39 @@
 					name:'设置',
 					icon:'el-icon-setting',
 					children:[
-						{name:'医生设置',path:'/orderList'},
-						{name:'疾病设置',path:'/orderList'},
-						{name:'媒体类型设置',path:'/orderList'},
-						{name:'医院科室设置',path:'/orderList'},
-						{name:'搜索引擎设置',path:'/orderList'}
+						{name:'医生设置',path:'/patientSetting'},
+						{name:'疾病设置',path:'/dieaseSetting'},
+						{name:'媒体类型设置',path:'/mediaSetting'},
+						{name:'医院科室设置',path:'/sectionSetting'},
+						{name:'搜索引擎设置',path:'/searchSetting'}
 					],
 					childshow:false
 				},{
 					name:'我的资料',
 					icon:'el-icon-time',
 					children:[
-						{name:'修改我的资料',path:'/orderList'},
-						{name:'修改密码',path:'/orderList'},
-						{name:'选项设置',path:'/orderList'},
+						{name:'修改我的资料',path:'/editData'},
+						{name:'修改密码',path:'/editPass'},
+						{name:'选项设置',path:'/choiceSetting'},
 					],
 					childshow:false
 				},{
 					name:'系统管理',
 					icon:'el-icon-menu',
 					children:[
-						{name:'菜单管理',path:'/orderList'},
-						{name:'人员管理',path:'/orderList'},
-						{name:'权限管理',path:'/orderList'},
-						{name:'部门管理',path:'/orderList'},
-						{name:'通知管理',path:'/orderList'},
+						{name:'菜单管理',path:'/Mtable'},
+						{name:'人员管理',path:'/Mperson'},
+						{name:'权限管理',path:'/Mauthority'},
+						{name:'部门管理',path:'/Mbranch'},
+						{name:'通知管理',path:'/Minfo'},
 					],
 					childshow:false
 				},{
 					name:"日志记录",
 					icon:'el-icon-document',
 					children:[
-						{name:'操作记录',path:'/orderList'},
-						{name:'登录错误记录',path:'/orderList'}
+						{name:'操作记录',path:'/operateNote'},
+						{name:'登录错误记录',path:'/loginerrorNote'}
 					],
 					childshow:false
 				}
@@ -161,15 +167,28 @@
 			}
 		},
 		created(){
-			this.$http.get('http://ceshi.0832pifu.com/test/test.php').then((res)=>{
-				this.ip = res.data.REMOTE_ADDR;
-			})
+			$.ajax({
+				type:"get",
+				url:"http://ceshi.0832pifu.com/test/test.php",
+				async:true,
+				success:(res)=>{
+				let	data =JSON.parse(res);
+					this.ip = data[2];
+					this.os = data[1];
+					this.broswer = data[0]
+				}
+			});
+			
+			
 		},
-		methods:{
-			test () {
-				
-			}
-		}
+		methods: {
+	      handleOpen(key, keyPath) {
+	        console.log(key, keyPath);
+	      },
+	      handleClose(key, keyPath) {
+	        console.log(key, keyPath);
+	      }
+	    }
 		
 	}
 </script>
@@ -188,15 +207,15 @@
 	    background: #2C3E50;
 	    color: #333;
 	    text-align: center;
-	    
+	    overflow-y: hidden;
 	    
 	  }
 	  
 	  .el-main {
 	    background-color: #E9EEF3;
 	    color: #333;
-	    text-align: center;
-	    line-height: 160px;
+	    text-align: left;
+	  
 	  }
 	  
 	  body  .el-container {
@@ -245,5 +264,4 @@
 	  .el-menu li {
 	  	text-align: left;
 	  }
-
 </style>
