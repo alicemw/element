@@ -58,6 +58,24 @@
 	  		<el-col :span="6"><i class="el-icon-menu"></i>系统:{{os}}</el-col>
 	  		<el-col :span="12"><i class="el-icon-search"></i>浏览器:{{broswer}}</el-col>
 	  	</el-row>
+	  	<el-card class="box-card status">
+		  <div slot="header" class="clearfix">
+		    <span>服务器状态</span>
+		    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+		  </div>
+		 	<el-row>
+		 		<el-col :span="6">
+		 			
+		 			<div id="cpu" style="width: 200px;height: 200px;"></div>
+		 		</el-col>
+		 		<el-col :span="6">
+		 			<div id="cpu1" style="width: 200px;height: 200px;"></div>
+		 		</el-col>
+		 		<el-col :span="6">
+		 			<div id="cpu2" style="width: 200px;height: 200px;"></div>
+		 		</el-col>
+		 	</el-row>
+		</el-card>
 	  </el-main>
 	</el-container>
 </template>
@@ -65,12 +83,64 @@
 <script>
 	export default {
 		data(){
-			
 			return {
 				ip:'',
 				os:'获取中',
 				broswer:'获取中',
 				active:'active',
+				option:{
+					 tooltip: {
+				        trigger: 'item',
+				        formatter: "{a} <br/>{b}: {c} ({d}%)"
+				    },
+					title:{
+						text:'cpu',
+						left:"center"
+					},
+					 
+				    
+					   
+				    series: [
+				        {
+				            name:'访问来源',
+				            type:'pie',
+				            radius: ['55%', '65%'],
+				            startAngle:90,//设置度数
+				            
+				            center:['50%','50%'],
+				            avoidLabelOverlap: false,
+				            label: {
+				                normal: {
+				                    show: true,
+				                    position: 'center'
+				                },
+				                emphasis: {
+				                    show: true,
+				                    textStyle: {
+				                        fontSize: '30',
+				                        fontWeight: 'bold'
+				                    }
+				                }
+				            },
+				            labelLine: {
+				                normal: {
+				                    show: false
+				                }
+				            },
+				            itemStyle:{
+				            	normal:{
+				            		
+				            	}
+				            },
+				            data:[
+				                {value:0.2,name:'20%',label:{normal:{color:'green'}}},
+				                {value:0.8}
+				               
+				            ]
+				        }
+				    ],
+				    color:['#20a53a','#ccc']
+				},
 				name:this.$route.name,
 				list:[
 				{name:'首页',icon:'el-icon-date',childshow:true},
@@ -165,6 +235,45 @@
 				}
 				]
 			}
+		},
+		mounted(){
+			let myChart = this.$echarts.init(document.getElementById('cpu'))
+			let myChart1 = this.$echarts.init(document.getElementById('cpu1'))
+			let myChart2 = this.$echarts.init(document.getElementById('cpu2'))
+			function cpuSimulator() {
+		 var J = 100,
+		  getNow = function() {
+		   return new Date().getTime();
+		  };
+		 !(function() {
+		  var I = document.createElement("div"),
+		   s = 50,
+		   fn = function(l) {
+		    l = 1;
+		    var now = getNow();
+		    var c = 1;
+		    while (c < J) {
+		     if (now > D + c*s) {
+		      l++;
+		     }
+		     c++;
+		    }
+		    D = getNow();
+		    I.innerHTML = "CPU：" + l/J * 100 + "%";
+		   },
+		   t = setInterval(fn, 500),
+		   D = getNow();
+		   I.style.cssText = "width:80px; height:20px; position:fixed !important; _position:absolute; top:10px; right:10px; border:1px solid #406c99; padding:2px; color:#f00;";
+		   document.body.appendChild(I);
+		   fn();
+		 })();
+		}
+		cpuSimulator();
+			
+			myChart.setOption(this.option);
+			myChart1.setOption(this.option);
+			myChart2.setOption(this.option);
+			
 		},
 		created(){
 			$.ajax({
@@ -263,5 +372,8 @@
 	  }
 	  .el-menu li {
 	  	text-align: left;
+	  }
+	  .status {
+	  	margin-top: 10px;
 	  }
 </style>
