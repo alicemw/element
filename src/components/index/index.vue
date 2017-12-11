@@ -4,22 +4,6 @@
 	  	<el-row class="ip">
 	  		<el-col><span class="el-icon-location">{{ip}}</span></el-col>
 	  	</el-row>
-	  	
-	  		<!--<template v-for="(item,index) in list">
-	  			<el-row>
-				  		<el-col class="list" :class="{active: item.childshow}" :key="item.id"  @click.native="item.childshow = !item.childshow">
-				  			<i :class="item.icon"></i>{{item.name}} 
-				  			<span :class="{'el-icon-caret-right':!item.childshow,'el-icon-caret-bottom' : item.childshow}"></span>
-				  		</el-col>
-	  			</el-row>
-		  		<el-row v-show="item.childshow">
-		  			<el-col class="list_child" v-for="a in item.children" :key="a.id">
-		  				<router-link :to="a.path">
-				  				{{a.name}}
-		  				</router-link>
-		  			</el-col>
-	  			</el-row>
-	  		</template>-->
 	  		<el-row class="tac">
 			  <el-col :span="24">
 			   
@@ -27,7 +11,7 @@
 			      default-active="1"
 			      class="el-menu-vertical-demo"
 			      @open="handleOpen"
-			      @close="handleClose" v-for="(item,index) in list">
+			      @close="handleClose" v-for="(item,index) in list" :key="index">
 			      <el-submenu index="index">
 			        <template slot="title">
 			          <i :class="item.icon"></i>
@@ -46,9 +30,7 @@
 			     
 			    </el-menu>
 			  </el-col>
-			 
 			</el-row>
-	  	
 	  </el-aside>
 	  <el-main>
 	  	<el-header>
@@ -81,199 +63,29 @@
 </template>
 
 <script>
+import data from './dd.js';
+
 	export default {
 		data(){
+			
 			return {
 				ip:'',
 				os:'获取中',
 				broswer:'获取中',
 				active:'active',
-				option:{
-					 tooltip: {
-				        trigger: 'item',
-				        formatter: "{a} <br/>{b}: {c} ({d}%)"
-				    },
-					title:{
-						text:'cpu',
-						left:"center"
-					},
-					 
-				    
-					   
-				    series: [
-				        {
-				            name:'访问来源',
-				            type:'pie',
-				            radius: ['55%', '65%'],
-				            startAngle:90,//设置度数
-				            
-				            center:['50%','50%'],
-				            avoidLabelOverlap: false,
-				            label: {
-				                normal: {
-				                    show: true,
-				                    position: 'center'
-				                },
-				                emphasis: {
-				                    show: true,
-				                    textStyle: {
-				                        fontSize: '30',
-				                        fontWeight: 'bold'
-				                    }
-				                }
-				            },
-				            labelLine: {
-				                normal: {
-				                    show: false
-				                }
-				            },
-				            itemStyle:{
-				            	normal:{
-				            		
-				            	}
-				            },
-				            data:[
-				                {value:0.2,name:'20%',label:{normal:{color:'green'}}},
-				                {value:0.8}
-				               
-				            ]
-				        }
-				    ],
-				    color:['#20a53a','#ccc']
-				},
+				option:data.option,
 				name:this.$route.name,
-				list:[
-				{name:'首页',icon:'el-icon-date',childshow:true},
-				{
-					name:'病人预约管理',
-					path:'/orderM',
-					icon:'el-icon-bell',
-					children:[
-						{name:'预约登记列表',path:'/orderList'},
-						{name:'预约病人搜索',path:'/orderSearch'},
-						{name:'重复病人查询',path:'/orderQuery'},
-						{name:'客服明细报表',path:'/orderDetail'},
-						{name:'月趋势报表',path:'/orderTrend'},
-						{name:'自定义图形报表',path:'/orderCustom'},
-						{name:'导出病人数据',path:'/orderDataExport'},
-						{name:'数据横向对比',path:'/orderComparison'}
-					],
-					childshow:false
-				},
-				{
-					name:'访客数据统计',
-					icon:'el-icon-tickets',
-					children:[
-						{name:'数据明细（网络）',path:'/vDetail1'},
-						{name:'医院项目设置（网络）',path:'/vSetting1'},
-						{name:'数据明细（电话）',path:'/vDetail2'},
-						{name:'医院项目设置（电话）',path:'/vSetting2'}
-					],
-					childshow:false
-				},
-				{
-					name:'网站挂号设置',
-					icon:'el-icon-edit-outline',
-					children:[
-						{name:'网站挂号列表',path:'/siteList'},
-						{name:'网站挂号设置',path:'/siteSetting'}
-					],
-					childshow:false
-				},{
-					name:'数据报表',
-					icon:'el-icon-edit',
-					children:[
-						{name:'总体报表',path:'/oSatement'},
-						{name:'性别',path:'/sex'},
-						{name:'年龄',path:'/age'},
-						{name:'病患类型',path:'/'},
-						{name:'媒体来源',path:'/orderList'},
-						{name:'来源状态',path:'/orderList'},
-						{name:'接待医生',path:'/orderList'},
-						{name:'客服',path:'/orderList'}
-					],
-					childshow:false
-				},{
-					name:'设置',
-					icon:'el-icon-setting',
-					children:[
-						{name:'医生设置',path:'/patientSetting'},
-						{name:'疾病设置',path:'/dieaseSetting'},
-						{name:'媒体类型设置',path:'/mediaSetting'},
-						{name:'医院科室设置',path:'/sectionSetting'},
-						{name:'搜索引擎设置',path:'/searchSetting'}
-					],
-					childshow:false
-				},{
-					name:'我的资料',
-					icon:'el-icon-time',
-					children:[
-						{name:'修改我的资料',path:'/editData'},
-						{name:'修改密码',path:'/editPass'},
-						{name:'选项设置',path:'/choiceSetting'},
-					],
-					childshow:false
-				},{
-					name:'系统管理',
-					icon:'el-icon-menu',
-					children:[
-						{name:'菜单管理',path:'/Mtable'},
-						{name:'人员管理',path:'/Mperson'},
-						{name:'权限管理',path:'/Mauthority'},
-						{name:'部门管理',path:'/Mbranch'},
-						{name:'通知管理',path:'/Minfo'},
-					],
-					childshow:false
-				},{
-					name:"日志记录",
-					icon:'el-icon-document',
-					children:[
-						{name:'操作记录',path:'/operateNote'},
-						{name:'登录错误记录',path:'/loginerrorNote'}
-					],
-					childshow:false
-				}
-				]
+				list:data.list
 			}
 		},
 		mounted(){
 			let myChart = this.$echarts.init(document.getElementById('cpu'))
 			let myChart1 = this.$echarts.init(document.getElementById('cpu1'))
 			let myChart2 = this.$echarts.init(document.getElementById('cpu2'))
-			function cpuSimulator() {
-		 var J = 100,
-		  getNow = function() {
-		   return new Date().getTime();
-		  };
-		 !(function() {
-		  var I = document.createElement("div"),
-		   s = 50,
-		   fn = function(l) {
-		    l = 1;
-		    var now = getNow();
-		    var c = 1;
-		    while (c < J) {
-		     if (now > D + c*s) {
-		      l++;
-		     }
-		     c++;
-		    }
-		    D = getNow();
-		    I.innerHTML = "CPU：" + l/J * 100 + "%";
-		   },
-		   t = setInterval(fn, 500),
-		   D = getNow();
-		   I.style.cssText = "width:80px; height:20px; position:fixed !important; _position:absolute; top:10px; right:10px; border:1px solid #406c99; padding:2px; color:#f00;";
-		   document.body.appendChild(I);
-		   fn();
-		 })();
-		}
-		cpuSimulator();
-			
 			myChart.setOption(this.option);
 			myChart1.setOption(this.option);
 			myChart2.setOption(this.option);
-			
+			this.changeData();
 		},
 		created(){
 			$.ajax({
@@ -296,10 +108,22 @@
 	      },
 	      handleClose(key, keyPath) {
 	        console.log(key, keyPath);
+	      },
+	      changeData(){
+	      	setInterval(()=>{//动态饼图
+	      		let myChart = this.$echarts.init(document.getElementById('cpu'))
+	      		let val =Math.floor(Math.random()*100);
+	      		let val2=100-val;
+	      		this.option.series[0].data[0].value =val;
+	      		this.option.series[0].data[1].value =val2;
+	      		console.log(val)
+	      		myChart.setOption(this.option);
+	      	},3000)
 	      }
 	    }
 		
 	}
+
 </script>
 
 <style language="less">
