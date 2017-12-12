@@ -58,6 +58,19 @@
 		 		</el-col>
 		 	</el-row>
 		</el-card>
+		<el-card class="box-card status">
+		  <div slot="header" class="clearfix">
+		    <span>实时流量</span>
+		    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+		  </div>
+		 	<el-row>
+		 		<el-col>
+		 			
+		 			<div id="flow" style="width: 500px;height: 500px;"></div>
+		 		</el-col>
+		 		
+		 	</el-row>
+		</el-card>
 	  </el-main>
 	</el-container>
 </template>
@@ -75,16 +88,19 @@ import data from './dd.js';
 				active:'active',
 				option:data.option,
 				name:this.$route.name,
-				list:data.list
+				list:data.list,
+				option2:data.option2
 			}
 		},
 		mounted(){
 			let myChart = this.$echarts.init(document.getElementById('cpu'))
 			let myChart1 = this.$echarts.init(document.getElementById('cpu1'))
 			let myChart2 = this.$echarts.init(document.getElementById('cpu2'))
+			let myChart3 = this.$echarts.init(document.getElementById('flow'))
 			myChart.setOption(this.option);
 			myChart1.setOption(this.option);
 			myChart2.setOption(this.option);
+			myChart3.setOption(this.option2);
 			this.changeData();
 		},
 		created(){
@@ -116,9 +132,27 @@ import data from './dd.js';
 	      		let val2=100-val;
 	      		this.option.series[0].data[0].value =val;
 	      		this.option.series[0].data[1].value =val2;
-	      		console.log(val)
+	      		
 	      		myChart.setOption(this.option);
-	      	},3000)
+	      	},3000);
+	      	var count = 1
+	      	setInterval( ()=>{
+		      	var myChart3 = this.$echarts.init(document.getElementById('flow'));
+			    var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/,'');
+			    var data0 = this.option2.series[0].data;
+			    var data1 = this.option2.series[1].data;
+			    data0.shift();
+			    data0.push(Math.round(Math.random() * 1000));
+			    data1.shift();
+			    data1.push((Math.random() * 10 + 5).toFixed(1) - 0);
+				
+			    this.option2.xAxis[0].data.shift();
+			    this.option2.xAxis[0].data.push(axisData);
+			    this.option2.xAxis[1].data.shift();
+			    this.option2.xAxis[1].data.push(count++);
+			  
+			    myChart3.setOption(this.option2);
+			}, 2100);
 	      }
 	    }
 		

@@ -65,6 +65,7 @@ const data = {
 	    ],
 	    color:['#20a53a','#ccc']
 	},
+	
 	list:[
 			{name:'首页',icon:'el-icon-date',childshow:true},
 			{
@@ -156,7 +157,58 @@ const data = {
 				],
 				childshow:false
 			}
-			]
+			],
+			option2 : {
+			    title : {
+			        text: '实时流量',
+			        subtext: '纯属虚构'
+			    },
+			    tooltip : {
+			        trigger: 'axis'
+			    },
+			    legend: {
+			        data:['上行','下行']
+			    },
+			    toolbox: {
+			        show : true,
+			        feature : {
+			            mark : {show: true},
+			            dataView : {show: true, readOnly: false},
+			            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+			            restore : {show: true},
+			            saveAsImage : {show: true}
+			        }
+			    },
+			    calculable : true,
+			    xAxis : [
+			        {
+			            type : 'category',
+			            boundaryGap : false,
+			            data : ['周一','周二','周三','周四','周五','周六','周日']
+			        }
+			    ],
+			    yAxis : [
+			        {
+			            type : 'value'
+			        }
+			    ],
+			    series : [
+			        {
+			            name:'上行',
+			            type:'line',
+			            smooth:true,
+			            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+			            data:[10, 12, 21, 54, 260, 830, 710]
+			        },
+			        {
+			            name:'下行',
+			            type:'line',
+			            smooth:true,
+			            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+			            data:[30, 182, 434, 791, 390, 30, 10]
+			        }
+			    ]
+			}
 	
 }
 export default data;
