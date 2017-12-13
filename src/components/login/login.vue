@@ -125,14 +125,16 @@ export default {
 					           offset:100
 					        });
 					        this.reset('loginform');
-		           		}else if(res =='登录成功！'){
+		           		}else if(res =='登录成功！'||res =='注册成功！'){
 		           			this.$notify({
 					          title: '成功',
 					          message: res,
 					          type: 'success',
 					          offset:100
 					        });
-					        this.$router.replace({path:'index'});
+					        this.$Cookie.set("name",this.loginform.user,{expires:1});
+					        this.$Cookie.set("pass",this.loginform.pass1+(new Date().getTime()),{expires:1});
+							this.$router.replace({path:'index'});
 							
 		           		}
 		           	}
@@ -158,7 +160,7 @@ export default {
 	height: 100%;
 	background: url('http://pic1.win4000.com/wallpaper/c/58c11baa3ca7b.jpg');
 	background-size: cover;
-}
+
 .el-card {
 	width: 300px;
 	position: absolute;
@@ -168,5 +170,6 @@ export default {
 }
 .clearfix span {
 	font-size: 20px;
+}
 }
 </style>

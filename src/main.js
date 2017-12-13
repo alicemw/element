@@ -6,6 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import echarts from 'echarts'
 import $ from 'jquery'
+import Cookie from 'js-cookie'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css'
 Vue.config.productionTip = false
@@ -13,6 +14,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 
 Vue.prototype.$echarts = echarts 
+Vue.prototype.$Cookie = Cookie 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

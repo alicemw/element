@@ -1,3 +1,12 @@
+var [dd,dd1,dd2] = [[],[],[]];
+		var now = new Date()
+			for (let i=0;i<10;++i) {
+				dd.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
+				now = new Date(now.getTime() - 2000);
+				dd1.unshift(Math.floor(Math.random()*100));
+				dd2.unshift(Math.floor(Math.random()*100));
+			}
+
 const data = {
 	option:{
 		 tooltip: {
@@ -160,54 +169,55 @@ const data = {
 			],
 			option2 : {
 			    title : {
-			        text: '实时流量',
-			        subtext: '纯属虚构'
-			    },
-			    tooltip : {
-			        trigger: 'axis'
-			    },
-			    legend: {
-			        data:['上行','下行']
-			    },
-			    toolbox: {
-			        show : true,
-			        feature : {
-			            mark : {show: true},
-			            dataView : {show: true, readOnly: false},
-			            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-			            restore : {show: true},
-			            saveAsImage : {show: true}
-			        }
-			    },
-			    calculable : true,
-			    xAxis : [
-			        {
-			            type : 'category',
-			            boundaryGap : false,
-			            data : ['周一','周二','周三','周四','周五','周六','周日']
-			        }
-			    ],
-			    yAxis : [
-			        {
-			            type : 'value'
-			        }
-			    ],
-			    series : [
-			        {
-			            name:'上行',
-			            type:'line',
-			            smooth:true,
-			            itemStyle: {normal: {areaStyle: {type: 'default'}}},
-			            data:[10, 12, 21, 54, 260, 830, 710]
-			        },
-			        {
-			            name:'下行',
-			            type:'line',
-			            smooth:true,
-			            itemStyle: {normal: {areaStyle: {type: 'default'}}},
-			            data:[30, 182, 434, 791, 390, 30, 10]
-			        }
-			    ]
+		        text: '流量状态',
+		        subtext: '纯属虚构'
+		    },
+		    tooltip : {
+		        trigger: 'axis'
+		    },
+		    legend: {
+		        data:['上行','下行']
+		    },
+		    toolbox: {
+		        show : true,
+		        feature : {
+		            mark : {show: true},
+		            dataView : {show: true, readOnly: false},
+		            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+		            restore : {show: true},
+		            saveAsImage : {show: true}
+		        }
+		    },
+		    calculable : true,
+		    xAxis : [
+		        {
+		            type : 'category',
+		            boundaryGap : false,
+		            data : dd
+		        }
+		    ],
+		    yAxis : [
+		        {
+		            type : 'value'
+		        }
+		    ],
+		    series : [
+		        {
+		            name:'上行',
+		            type:'line',
+		            smooth:true,
+		            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+		            data:dd1
+		        },
+		        {
+		            name:'下行',
+		            type:'line',
+		            smooth:true,
+		            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+		            data:dd2
+		        }
+		       
+		    ]
 			}
 	
 }

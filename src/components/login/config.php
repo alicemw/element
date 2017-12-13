@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: * ");
 header("Content-type: text/html; charset=utf-8"); 
 	$name =trim($_POST['user']);
-	$pass = $_POST['pass1'];
+	$pass = md5($_POST['pass1']);
 	
 	$db = new mysqli('localhost','ceshi_0832pifu','I5FBNAHbI5sFBRztPNAH6Sb','ceshi_0832pifu');
 	if(mysqli_connect_errno())
@@ -18,7 +18,7 @@ header("Content-type: text/html; charset=utf-8");
 	}
 	function login($db,$name,$pass){
 		
-		$sql = 'select * from user where name = '.$name;
+		$sql = "select * from user where name = '".$name."'";
 		$result = $db->query($sql);
 		
 		$row = $result->fetch_array();
@@ -35,17 +35,18 @@ header("Content-type: text/html; charset=utf-8");
 
 	function register($db,$name,$pass){
 		
-		$sql = 'select * from user where name = '.$name;
+		$sql = "select * from user where name = '".$name."'";
 		$result = $db->query($sql);
 		
 		$row = $result->fetch_array();
 		if($row){
 			echo "用户已存在！";
 		}else {
-			$sql = 'insert into user(name,pass) values('.$name.','.$pass.')';
+			$sql = "insert into user(name,pass) values('".$name."','".$pass."')";
+			echo $sql;
+			
 			$result = $db->query($sql);
-			$row = $result->fetch_array();
-			if($row){
+			if($result){
 				echo "注册成功！";
 			}else {
 				echo "注册失败！";

@@ -1,91 +1,82 @@
 <template>
 	<el-container>
-	  <el-aside width="200px">
-	  	<el-row class="ip">
-	  		<el-col><span class="el-icon-location">{{ip}}</span></el-col>
-	  	</el-row>
-	  		<el-row class="tac">
-			  <el-col :span="24">
-			   
-			    <el-menu
-			      default-active="1"
-			      class="el-menu-vertical-demo"
-			      @open="handleOpen"
-			      @close="handleClose" v-for="(item,index) in list" :key="index">
-			      <el-submenu index="index">
-			        <template slot="title">
-			          <i :class="item.icon"></i>
-			          <span>{{item.name}}</span>
-			        </template>
-			        <template v-for="(aa,index) in item.children">
-			        		
-				        <el-menu-item-group>
-				        	<router-link :to="aa.path">
-					          <el-menu-item index="1-index">{{aa.name}}</el-menu-item>
-				        	</router-link>
-				        </el-menu-item-group>
-			        </template>
-			        
-			      </el-submenu>
-			     
-			    </el-menu>
-			  </el-col>
-			</el-row>
-	  </el-aside>
+	  <main_nav></main_nav>
 	  <el-main>
 	  	<el-header>
 	  		<i class="el-icon-location" style="color: #20A53A;"></i>Position:{{name}}
+		    <el-dialog title="收货地址" :visible.sync="dialogVisible">
+			  <p>姓名：{{user}}</p>
+			  <p>权限：管理员</p>
+			  <p>联系方式：18323797262</p>
+			</el-dialog>
+	  		<el-button @click="dialogVisible = true" style="float: right;margin-top: 10px;"><i class="el-icon-info"></i> 我的信息</el-button>
 	  	</el-header>
 	  	<el-row style="margin-top:10px; padding: 10px;background: #20A53A;color: white;">
 	  		<el-col :span="6"><i class="el-icon-menu"></i>系统:{{os}}</el-col>
 	  		<el-col :span="12"><i class="el-icon-search"></i>浏览器:{{broswer}}</el-col>
 	  	</el-row>
-	  	<el-card class="box-card status">
-		  <div slot="header" class="clearfix">
-		    <span>服务器状态</span>
-		    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-		  </div>
-		 	<el-row>
-		 		<el-col :span="6">
-		 			
-		 			<div id="cpu" style="width: 200px;height: 200px;"></div>
-		 		</el-col>
-		 		<el-col :span="6">
-		 			<div id="cpu1" style="width: 200px;height: 200px;"></div>
-		 		</el-col>
-		 		<el-col :span="6">
-		 			<div id="cpu2" style="width: 200px;height: 200px;"></div>
-		 		</el-col>
-		 	</el-row>
-		</el-card>
-		<el-card class="box-card status">
-		  <div slot="header" class="clearfix">
-		    <span>实时流量</span>
-		    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-		  </div>
-		 	<el-row>
-		 		<el-col>
-		 			
-		 			<div id="flow" style="width: 500px;height: 500px;"></div>
-		 		</el-col>
-		 		
-		 	</el-row>
-		</el-card>
+	  	<el-row>
+	  		<el-col>
+	  			<el-card class="box-card status">
+				  <div slot="header" class="clearfix">
+				    <span>服务器状态</span>
+				    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+				  </div>
+				 	<el-row>
+				 		<el-col :span="6">
+				 			
+				 			<div id="cpu" style="width: 200px;height: 200px;"></div>
+				 		</el-col>
+				 		<el-col :span="6">
+				 			<div id="cpu1" style="width: 200px;height: 200px;"></div>
+				 		</el-col>
+				 		<el-col :span="6">
+				 			<div id="cpu2" style="width: 200px;height: 200px;"></div>
+				 		</el-col>
+				 	</el-row>
+				</el-card>
+	  			
+	  		</el-col>
+	  	</el-row>
+	  	<el-row>
+	  		<el-col>
+	  			<el-card class="box-card status">
+				  <div slot="header" class="clearfix">
+				    <span>实时流量</span>
+				    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+				  </div>
+				 	<el-row>
+				 		<el-col>
+				 			
+				 			<div id="flow" style="width: 800px;height: 300px;"></div>
+				 		</el-col>
+				 		
+				 	</el-row>
+				</el-card>
+	  		</el-col>
+	  	</el-row>
+		
 	  </el-main>
 	</el-container>
 </template>
 
 <script>
-import data from './dd.js';
+import data from './dd.js'
+import main_nav from './../nav/main_nav.vue'
 
 	export default {
+		components:{
+		  	main_nav
+		  },
 		data(){
 			
 			return {
 				ip:'',
+				user:'或缺中',
 				os:'获取中',
 				broswer:'获取中',
 				active:'active',
+				dialogVisible:false,
 				option:data.option,
 				name:this.$route.name,
 				list:data.list,
@@ -93,15 +84,13 @@ import data from './dd.js';
 			}
 		},
 		mounted(){
-			let myChart = this.$echarts.init(document.getElementById('cpu'))
 			let myChart1 = this.$echarts.init(document.getElementById('cpu1'))
 			let myChart2 = this.$echarts.init(document.getElementById('cpu2'))
-			let myChart3 = this.$echarts.init(document.getElementById('flow'))
-			myChart.setOption(this.option);
 			myChart1.setOption(this.option);
 			myChart2.setOption(this.option);
-			myChart3.setOption(this.option2);
+		
 			this.changeData();
+			this.user = this.$Cookie.get("name");
 		},
 		created(){
 			$.ajax({
@@ -116,7 +105,6 @@ import data from './dd.js';
 				}
 			});
 			
-			
 		},
 		methods: {
 	      handleOpen(key, keyPath) {
@@ -126,33 +114,31 @@ import data from './dd.js';
 	        console.log(key, keyPath);
 	      },
 	      changeData(){
-	      	setInterval(()=>{//动态饼图
 	      		let myChart = this.$echarts.init(document.getElementById('cpu'))
+	      		let myChart3 = this.$echarts.init(document.getElementById('flow'))
+	      	setInterval(()=>{//动态饼图
 	      		let val =Math.floor(Math.random()*100);
+	      		let dd =this.option2.xAxis[0].data;
 	      		let val2=100-val;
 	      		this.option.series[0].data[0].value =val;
 	      		this.option.series[0].data[1].value =val2;
+					let dd1 =this.option2.series[0].data;
+					let dd2 =this.option2.series[1].data;
+					
+					dd.shift();
+					dd.push((new Date()).toLocaleTimeString().replace(/^\D*/,''));
+					dd1.shift();
+					dd2.shift();
+					dd1.push(Math.floor(Math.random()*100));
+					dd2.push(Math.floor(Math.random()*100));
+					this.option2.xAxis[0].data =dd;
+					this.option2.series[0].data =dd1;
+					this.option2.series[1].data =dd2;
+					myChart3.setOption(this.option2)
 	      		
-	      		myChart.setOption(this.option);
-	      	},3000);
-	      	var count = 1
-	      	setInterval( ()=>{
-		      	var myChart3 = this.$echarts.init(document.getElementById('flow'));
-			    var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/,'');
-			    var data0 = this.option2.series[0].data;
-			    var data1 = this.option2.series[1].data;
-			    data0.shift();
-			    data0.push(Math.round(Math.random() * 1000));
-			    data1.shift();
-			    data1.push((Math.random() * 10 + 5).toFixed(1) - 0);
-				
-			    this.option2.xAxis[0].data.shift();
-			    this.option2.xAxis[0].data.push(axisData);
-			    this.option2.xAxis[1].data.shift();
-			    this.option2.xAxis[1].data.push(count++);
-			  
-			    myChart3.setOption(this.option2);
-			}, 2100);
+	      			myChart.setOption(this.option);
+	      	},2000);
+	      
 	      }
 	    }
 		
@@ -174,7 +160,7 @@ import data from './dd.js';
 	    background: #2C3E50;
 	    color: #333;
 	    text-align: center;
-	    overflow-y: hidden;
+	    overflow-x: hidden;
 	    
 	  }
 	  
@@ -184,6 +170,7 @@ import data from './dd.js';
 	    text-align: left;
 	  
 	  }
+	
 	  
 	  body  .el-container {
 	  

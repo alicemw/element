@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/login/login'
 import index from '@/components/index/index'
+import orderList from '@/components/order/orderList'
 
 import helloworld from '@/components/helloworld'
 import animate from 'animate.css'
@@ -23,6 +24,10 @@ export default new Router({
     	path:'/index',
     	name:'首页',
     	component:index
+    },{
+    	path:'/orderList',
+    	name:'orderList',
+    	component:orderList
     }
   ]
 })
