@@ -7,6 +7,7 @@
 		    :data="tableData"
 		    border
 		    highlight-current-row
+		    @sort-change="test"
 		    style="width: 100%;">
 		    <el-table-column
 		      type="index"
@@ -33,6 +34,13 @@
 		    </el-table-column>
 		    
 		  </el-table>
+		  <el-pagination
+			  background
+			  layout="prev, pager, next,jumper"
+			   :current-page="currentPage"
+			   @current-change="handleCurrentChange"
+			  :total="total">
+			</el-pagination>
 		</el-main>
 		</el-container>
 		
@@ -50,71 +58,83 @@
 		data(){
 			return {
 				
-				tableData:[
-				{
-		          date: '2016-05-02',
-		          name: '王小虎',
-		          address: '上海市普陀区金沙江路 1518 弄'
-		        }, {
-		          date: '2016-05-04',
-		          name: '王小虎',
-		          address: '上海市普陀区金沙江路 1517 弄'
-		        }, {
-		          date: '2016-05-01',
-		          name: '王小虎',
-		          address: '上海市普陀区金沙江路 1519 弄'
-		        }, {
-		          date: '2016-05-03',
-		          name: '王小虎',
-		          address: '上海市普陀区金沙江路 1516 弄'
-		        }
-				],
+				tableData:[],
 				tableList:[
 				{
 					prop:'addtime',
-					name:'日期'
+					name:'添加日期'
 				},
 				{
 					prop:'name',
-					name:'栏目'
+					name:'姓名'
 				},
 				{
 					prop:'tel',
 					name:'电话'
+				},
+				{
+					prop:'sex',
+					name:'性别'
+				},
+				{
+					prop:'order_date',
+					name:'预约日期'
 				}
-				]
+				
+				],
+				total:0,
+				currentPage:1,
+				order:'descending',
+				orderby:'addtime'
+
 			}
 		},
 		methods:{
 			deleteRow(index,rows){
 				 rows.splice(index, 1);
 			},
+			test(a){
+				this.order =a.order;
+				this.currentPage =1;
+				this.orderby =a.prop;
+				
+				this.getData()
+			},
 			formatTime (time) {
 		        let unixtime = time
 		         let unixTimestamp = new Date(unixtime * 1000)
 		         let Y = unixTimestamp.getFullYear()
-		         let M = ((unixTimestamp.getMonth() + 1) > 10 ? (unixTimestamp.getMonth() + 1) : '0' + (unixTimestamp.getMonth() + 1))
-		         let D = (unixTimestamp.getDate() > 10 ? unixTimestamp.getDate() : '0' + unixTimestamp.getDate())
+		         let M = ((unixTimestamp.getMonth() + 1) >= 10 ? (unixTimestamp.getMonth() + 1) : '0' + (unixTimestamp.getMonth() + 1))
+		         let D = (unixTimestamp.getDate() >= 10 ? unixTimestamp.getDate() : '0' + unixTimestamp.getDate())
 		         let toDay = Y + '-' + M + '-' + D
 		         return toDay
-		       }
+		    },
+		    handleCurrentChange(val){
+		    	this.currentPage =val;
+		    	this.getData();
+		    },
+		    getData(){
+		    	$.ajax({
+					type:"get",
+					url:"http://ceshi.0832pifu.com/test/data.php",
+					async:true,
+					data: {pagesize:this.currentPage,order:this.order,orderby:this.orderby},
+					success:(res)=>{
+						let data =JSON.parse(res);
+						for (let i = 0;i<data.length;++i) {
+							data[i].addtime = this.formatTime(data[i].addtime);
+							data[i].order_date = this.formatTime(data[i].order_date);
+						}
+						this.total = Number(data.pop()[0]);
+						
+						this.tableData = data;
+						
+					}
+				});
+		    }
 		},
 		mounted(){
-			$.ajax({
-				type:"get",
-				url:"http://ceshi.0832pifu.com/test/data.php",
-				async:true,
-				success:(res)=>{
-					let data =JSON.parse(res);
-					for (let i = 0;i<data.length;++i) {
-						data[i].addtime = this.formatTime(data[i].addtime);
-					}
-					console.log(data)
-					
-					console.log(data2);
-					this.tableData = data;
-				}
-			});
+			this.getData();
 		}
 		
 	}
@@ -133,4 +153,12 @@
 		padding: 0;
 		font-size: 22px;
 	} 
+	.el-pager li.active {
+		background: #409eff;
+		color: white;
+		border-left: none;
+	}
+	.el-pagination {
+		margin-top: 20px;
+	}
 </style>

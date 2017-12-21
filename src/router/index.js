@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import login from '@/components/login/login'
 import index from '@/components/index/index'
 import orderList from '@/components/order/orderList'
+import orderSearch from '@/components/order/orderSearch'
 
 import helloworld from '@/components/helloworld'
 import animate from 'animate.css'
@@ -28,6 +29,10 @@ export default new Router({
     	path:'/orderList',
     	name:'orderList',
     	component:orderList
+    },{
+    	path:'/orderSearch',
+    	name:'orderSearch',
+    	component:orderSearch
     }
   ]
 })
