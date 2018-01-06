@@ -6,11 +6,29 @@
 			<el-card class="box-card">
 			  <div slot="header" class="clearfix" style="text-align: left;">
 			    <span style="font-size: 20px;">病人搜索</span>
-			    <el-button @click="test" style="float: right; padding: 3px 0;font-size: 18px;" type="text">操作按钮</el-button>
+			    <el-button @click="test" style="float: right; padding: 3px 0;font-size: 18px;" type="text">搜索</el-button>
 			   	<el-input v-model="input" placeholder="请输入内容"></el-input>
 			  </div>
 			  <el-row>
-			  	<el-col :span='22' :offset="2" >
+			  	<el-row>
+			  		<el-col style="font-size: 24px;font-weight: bold;">关键词：</el-col>
+			  	</el-row>
+			  	<el-row>
+			  		<el-col :offset='5'>
+			  			<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">时间类型:</label>
+			  			<el-input
+						    placeholder="请输入内容"
+						    prefix-icon="el-icon-search"
+						    v-model="input21">
+						  </el-input>
+			  		</el-col>
+			  	</el-row>
+			  </el-row>
+			  <el-row>
+			  	<el-row>
+			  		<el-col style="font-size: 24px;font-weight: bold;">时间限制：</el-col>
+			  	</el-row>
+			  	<el-col :offset='5'>
 			  		<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">时间类型:</label>
 			  		<el-select v-model="value" placeholder="请选择">
 					    <el-option
@@ -25,11 +43,8 @@
 			  </el-row>
 			  
 			  <el-row>
-			  	<el-col :span='3' :offset="2" >
-			  		<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">时间:</label>
-			  	</el-col>
-			  	<el-col :span="6">
-			  		
+			  	<el-col :offset='5'>
+			  		<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">时间起止:</label>
 			  		<el-date-picker
 				      v-model="value7"
 				      type="daterange"
@@ -41,6 +56,7 @@
 				      :picker-options="pickerOptions2">
 				    </el-date-picker>
 			  	</el-col>
+			  
 
 			  </el-row>
 			   
@@ -127,10 +143,10 @@
 		},
 		methods:{
 			test(){
-				alert(this.value7)
+				alert(this.value)
 			},
 			
-		    getData(){
+		    searchData(){
 		    	$.ajax({
 					type:"get",
 					url:"http://ceshi.0832pifu.com/test/data.php",
@@ -174,5 +190,11 @@
 	transform: translateY(-10px);
 	float: right;
 	margin-right: 15px;
+}
+.el-row {
+	margin: 10px 0;
+}
+.el-row .el-col {
+	text-align: left;
 }
 </style>
