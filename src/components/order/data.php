@@ -1,6 +1,7 @@
 <?php
 	header("Access-Control-Allow-Origin: * ");
 	header("Content-type: text/html; charset=utf-8"); 
+	require_once "config.php"
 	$pagesize =$_GET['pagesize']*10;
 	$pagestart =$pagesize-1*10;
 	$order = $_GET['order'] == 'ascending' ? 'asc' : 'desc';

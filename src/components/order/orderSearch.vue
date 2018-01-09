@@ -15,7 +15,7 @@
 			  	</el-row>
 			  	<el-row>
 			  		<el-col :offset='5'>
-			  			<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">时间类型:</label>
+			  			<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">关键词:</label>
 			  			<el-input
 						    placeholder="请输入内容"
 						    prefix-icon="el-icon-search"
@@ -25,40 +25,58 @@
 			  	</el-row>
 			  </el-row>
 			  <el-row>
-			  	<el-row>
-			  		<el-col style="font-size: 24px;font-weight: bold;">时间限制：</el-col>
-			  	</el-row>
-			  	<el-col :offset='5'>
-			  		<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">时间类型:</label>
-			  		<el-select v-model="value" placeholder="请选择">
-					    <el-option
-					      v-for="item in options"
-					      :key="item.value"
-					      :label="item.label"
-					      :value="item.value">
-					    </el-option>
-					  </el-select>
-			  	</el-col>
-
+		  		<el-row>
+				  	<el-row>
+				  		<el-col style="font-size: 24px;font-weight: bold;">时间限制：</el-col>
+				  	</el-row>
+				  	<el-col :offset='5'>
+				  		<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">时间类型:</label>
+				  		<el-select v-model="value1" placeholder="请选择">
+						    <el-option
+						      v-for="item in timetypes"
+						      :key="item.value"
+						      :label="item.label"
+						      :value="item.value">
+						    </el-option>
+						  </el-select>
+				  	</el-col>
+				  </el-row>
+				  <el-row>
+				  	<el-col :offset='5'>
+				  		<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">时间起止:</label>
+				  		<el-date-picker
+					      v-model="value7"
+					      type="daterange"
+					      align="right"
+					      unlink-panels
+					      range-separator="至"
+					      start-placeholder="开始日期"
+					      end-placeholder="结束日期"
+					      :picker-options="pickerOptions2">
+					    </el-date-picker>
+				  	</el-col>
+				  </el-row>
 			  </el-row>
-			  
+			  <!--人员限制-->
 			  <el-row>
-			  	<el-col :offset='5'>
-			  		<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">时间起止:</label>
-			  		<el-date-picker
-				      v-model="value7"
-				      type="daterange"
-				      align="right"
-				      unlink-panels
-				      range-separator="至"
-				      start-placeholder="开始日期"
-				      end-placeholder="结束日期"
-				      :picker-options="pickerOptions2">
-				    </el-date-picker>
-			  	</el-col>
-			  
-
+		  		<el-row>
+				  	<el-row>
+				  		<el-col style="font-size: 24px;font-weight: bold;">人员限制：</el-col>
+				  	</el-row>
+				  	<el-col :offset='5'>
+				  		<label for="" style="margin-right: 10px;font-size: 20px;font-weight: bold;">搜客服:</label>
+				  		<el-select v-model="value2" placeholder="请选择">
+						    <el-option
+						      v-for="item in services"
+						      :key="item.idnum"
+						      :label="item.name"
+						      :value="item.name">
+						    </el-option>
+						  </el-select>
+				  	</el-col>
+				  </el-row>
 			  </el-row>
+			  
 			   
 			</el-card>			
 		</el-main>
@@ -81,8 +99,14 @@
 				input:'',
 				value7:'',
 				tableData:[],
-				value:'',
-				 options: [{
+				value1:'',
+				value2:'',
+				services:[
+					{name:'小明',idnum:1},
+					{name:'小李',idnum:2},
+					{name:'小红',idnum:3}
+				],
+				 timetypes: [{
 		          value: 'order_date',
 		          label: '预约时间'
 		        }, {
@@ -196,5 +220,9 @@
 }
 .el-row .el-col {
 	text-align: left;
+}
+.el-input {
+	display: inline-block;
+	width: 300px;
 }
 </style>
